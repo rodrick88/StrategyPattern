@@ -1,39 +1,130 @@
-# Introduction
+Strategy Pattern Allocation Management System
+Overview
+Welcome to the Strategy Pattern Allocation Management System! This project is designed to manage the expiration and availability of various types of allocations, such as vacation days, sick leave, remote work days, etc. The system updates allocation availability daily, following specific business rules for each allocation category.
 
-This test puts you in the role of having to work with someone else's code. It is highly suggested that you use test-first development with this exercise. 
+This project implements the Strategy Pattern to handle the diverse behaviors associated with different types of allocations. By utilizing this design pattern, we achieve a flexible and maintainable codebase that can easily accommodate new allocation types and behaviors.
 
-# Background
+Table of Contents
+Background
+Features
+Design Patterns Used
+Strategy Pattern
+What is the Strategy Pattern?
+Why Use the Strategy Pattern?
+Project Structure
+Getting Started
+Prerequisites
+Running the Application
+Testing
+Contributing
+License
+Background
+In the context of resource management, allocations represent entities that manage the expiration and availability of days or resources that can be requested (e.g., vacation days, remote work days). These allocations:
 
-Hi and welcome to team. As you know, we are a company dedicated to solving employees' time management problems. In this case we’re about to improve our allocations features. Allocations are the entities responsible for managing expiration and availability of days to be requested. These allocations can be of different categories (vacations, …) and are constantly increasing in availability as they approach their expiration date. The more days employees work the more days they have available to be requested. Availability drops to 0 after the expiration date. We have a system in place that updates availability for the allocations. The UpdateAvailability() method is called each morning by another part of our system. Your task is to add the new feature to our system so that we can begin managing a new category of allocations. First an introduction to our system:
+Have a DaysToExpiration value indicating the number of days before the allocation expires.
+Have an Availability value indicating the number of days or units available for request.
+The system updates the availability of each allocation daily, following specific rules that vary based on the allocation category.
 
-- All allocations have an DaysToExpiration value which denotes the number of days the allocation expires
-- All allocations have an Availability value which denotes the number of days available for being requested
-- At the end of each day our system lowers DaysToExpiration value by 1 and increases Availability by 0.1 for every allocation
+Features
+Daily Update of Allocations: Automatically updates the DaysToExpiration and Availability of each allocation every day.
+Support for Multiple Allocation Categories: Handles various allocation types like "Vacation", "Sickness", "HomeWork", "RemoteWork", and "Compensated" allocations.
+Extensible Design: Easily add new allocation types and behaviors without modifying existing code.
+Strategy Pattern Implementation: Uses the Strategy Pattern to encapsulate the behaviors of different allocation types.
+Design Patterns Used
+Strategy Pattern
+What is the Strategy Pattern?
+The Strategy Pattern is a behavioral design pattern that allows you to define a family of algorithms, encapsulate each one as a separate class, and make them interchangeable. This pattern enables the algorithm to vary independently from the clients that use it.
 
-Pretty simple, right? Well, this is where it gets interesting:
+In simpler terms, the Strategy Pattern lets you select the algorithm's behavior at runtime. It encapsulates related algorithms (strategies) so that they are interchangeable within that family.
 
-- Availability drops to 0 after the expiration date
-- The Availability of an allocation is never more than 20
-- For “Vacation” allocations, once the expiration date has passed, availability is not set to 0 but decreases by 0.1
-- "HomeWork" allocations actually decrease by 0.1 in Availability on each update.
-- The Availability of an allocation is never negative
-- "Sickness" never has to be expired or increases in Availability
-- "RemoteWork", like home work, decreases in Availability as its Expiration approaches
-  - Availability decreases by 0.2 when there are 10 days or less
-  - Availability decreases by 0.3 when there are 5 days or less
+Why Use the Strategy Pattern?
+In this project, different allocation types have unique behaviors when updating their availability and expiration. By using the Strategy Pattern, we can:
 
-# Instructions
+Encapsulate Behaviors: Each allocation type's update logic is encapsulated in its own strategy class.
+Promote Open/Closed Principle: We can add new allocation types without modifying existing code, thus the system is open for extension but closed for modification.
+Enhance Maintainability: Separating the behaviors makes the code easier to understand, maintain, and test.
+Increase Flexibility: Strategies can be changed or combined at runtime, allowing for dynamic behavior adjustments.
+Project Structure
+mathematica
+Copiar código
+StrategyPattern/
+├── StrategyPattern.Domain/
+│   ├── Entities/
+│   │   └── Allocation.cs
+│   ├── Services/
+│   │   ├── Strategies/
+│   │   │   ├── IUpdateStrategy.cs
+│   │   │   ├── DefaultUpdateStrategy.cs
+│   │   │   ├── VacationUpdateStrategy.cs
+│   │   │   ├── HomeWorkUpdateStrategy.cs
+│   │   │   ├── RemoteWorkUpdateStrategy.cs
+│   │   │   ├── SicknessUpdateStrategy.cs
+│   │   │   └── CompensatedUpdateStrategy.cs
+│   │   └── Factories/
+│   │       └── UpdateStrategyFactory.cs
+├── StrategyPattern.Application/
+│   ├── Services/
+│   │   ├── IAllocationService.cs
+│   │   └── AllocationService.cs
+│   └── StrategyProgram.cs
+├── StrategyPattern.Presentation/
+│   └── Program.cs
+├── StrategyPattern.Tests/
+│   ├── DefaultUpdateStrategyTests.cs
+│   ├── VacationUpdateStrategyTests.cs
+│   ├── HomeWorkUpdateStrategyTests.cs
+│   ├── RemoteWorkUpdateStrategyTests.cs
+│   ├── SicknessUpdateStrategyTests.cs
+│   ├── CompensatedUpdateStrategyTests.cs
+│   └── AllocationServiceTests.cs
+└── README.md
+StrategyPattern.Domain: Contains the domain entities, strategies, and factories.
+StrategyPattern.Application: Contains application services and orchestrators.
+StrategyPattern.Presentation: The entry point of the application.
+StrategyPattern.Tests: Contains all unit tests for the strategies and services.
+Getting Started
+Prerequisites
+.NET SDK installed on your machine.
+Running the Application
+Clone the Repository
 
-We have recently created a new allocation category that requires an update to our system:
+bash
+Copiar código
+git clone https://github.com/yourusername/StrategyPattern.git
+Navigate to the Presentation Directory
 
-- "Compensated" allocations increase in Availability twice as fast as normal allocations
+bash
+Copiar código
+cd StrategyPattern/StrategyPattern.Presentation
+Run the Application
 
-Feel free to make any changes to the UpdateAvailability method and add any new code as long as everything still works correctly. However, do not alter the Allocation class or Allocations property as those belong to another team that doesn't believe in shared code ownership (you can make the UpdateAvailability method and Allocations property static if you like, we'll cover for you).
+bash
+Copiar código
+dotnet run
+You should see the output of the application, showing the daily updates of each allocation.
 
-Just for clarification, an allocation can never have its Availability increased above 20, however "Sickness" is a legacy allocation and as such its Availability is 25 and it never alters.
+Testing
+To run the unit tests:
 
-## Extra Credit
+Navigate to the Tests Directory
 
-- Allocation categories are determined by whether they contain a given string in their name (e.g. "Vacation" or "Sickness" or "HomeWork")
-- Any allocation can thus be compensated, with the resulting effects (e.g. "Compensated Vacation")
+bash
+Copiar código
+cd StrategyPattern/StrategyPattern.Tests
+Run the Tests
 
+bash
+Copiar código
+dotnet test
+This will execute all the unit tests and display the results.
+
+Contributing
+Contributions are welcome! Please fork the repository and submit a pull request with your enhancements.
+
+When contributing, please:
+
+Follow the existing coding style.
+Write unit tests for your changes.
+Update the documentation if necessary.
+License
+This project is licensed under the MIT License - see the LICENSE file for details.

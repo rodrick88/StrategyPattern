@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Woffu.Domain\StrategyPattern.Domain.csproj" />
+    <ProjectReference Include="..\StrategyPattern.Domain\StrategyPattern.Domain.csproj" />
   </ItemGroup>
 
 </Project>

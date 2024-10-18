@@ -24,12 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Woffu.Application\StrategyPattern.Application.csproj" />
-    <ProjectReference Include="..\Woffu.Domain\StrategyPattern.Domain.csproj" />
+    <ProjectReference Include="..\StrategyPattern.Application\StrategyPattern.Application.csproj" />
+    <ProjectReference Include="..\StrategyPattern.Domain\StrategyPattern.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Using Include="Xunit" />
-  </ItemGroup>
 
 </Project>

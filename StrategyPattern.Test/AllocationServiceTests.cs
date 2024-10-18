@@ -1,5 +1,6 @@
 ﻿using StrategyPattern.Application.Services;
 using StrategyPattern.Domain.Entities;
+using Xunit;
 
 
 namespace StrategyPattern.Test;
